@@ -1,4 +1,5 @@
 import { useState } from "react";
+import FormSplitBill from "./FormSplitBill";
 
 const initialFriends = [
   {
@@ -79,7 +80,7 @@ export default function App() {
   );
 }
 
-function Button({ children, onClick }) {
+export function Button({ children, onClick }) {
   return (
     <button className="button" onClick={onClick}>
       {children}
@@ -162,57 +163,6 @@ function FormAddFriend({ onAddFriend }) {
         value={image}
         onChange={(e) => setImage(e.target.value)}
       ></input>
-
-      <Button>Add</Button>
-    </form>
-  );
-}
-
-function FormSplitBill({ selectedFriend, onSplitBill }) {
-  const [bill, setBill] = useState("");
-  const [paidByUser, setPaidByUser] = useState("");
-  const paidByFriend = bill ? bill - paidByUser : "";
-  const [whoIsPaying, setWhoIsPaying] = useState("user");
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    if (!bill || !paidByUser) return;
-    onSplitBill(whoIsPaying === "user" ? paidByFriend : -paidByUser);
-  }
-
-  return (
-    <form className="form-split-bill" onSubmit={handleSubmit}>
-      <h2>Split a bill with {selectedFriend.name}</h2>
-
-      <label>💵 Bill value</label>
-      <input
-        type="text"
-        value={bill}
-        onChange={(e) => setBill(Number(e.target.value))}
-      ></input>
-
-      <label>🙋‍♂️ Your expenses</label>
-      <input
-        type="text"
-        value={paidByUser}
-        onChange={(e) =>
-          setPaidByUser(
-            Number(e.target.value) > bill ? paidByUser : Number(e.target.value)
-          )
-        }
-      ></input>
-
-      <label>🙋‍♀️ {selectedFriend.name}'s expenses</label>
-      <input type="text" value={paidByFriend} disabled></input>
-
-      <label>🤑 Who is paying the bill? </label>
-      <select
-        value={whoIsPaying}
-        onChange={(e) => setWhoIsPaying(e.target.value)}
-      >
-        <option value="user">You</option>
-        <option value="friend">{selectedFriend.name}</option>
-      </select>
 
       <Button>Add</Button>
     </form>
